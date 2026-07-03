@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
-import { Zap, ArrowRight, ShieldCheck, TrendingUp, GitBranch, CreditCard, Users, Star } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Zap, ArrowRight, ShieldCheck, TrendingUp, GitBranch, CreditCard, Users, Star, Sun, Moon } from "lucide-react";
 
 const STATS = [
   { label: "Verified Trainers", value: "1,847" },
@@ -44,6 +45,24 @@ const FEATURES = [
 export function Landing() {
   const navigate = useNavigate();
 
+  const [isLightMode, setIsLightMode] = useState(() => {
+    return localStorage.getItem('theme') === 'light';
+  });
+
+  useEffect(() => {
+    if (isLightMode) {
+      document.documentElement.classList.add('light');
+    } else {
+      document.documentElement.classList.remove('light');
+    }
+  }, [isLightMode]);
+
+  const toggleTheme = () => {
+    const nextTheme = !isLightMode;
+    setIsLightMode(nextTheme);
+    localStorage.setItem('theme', nextTheme ? 'light' : 'dark');
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Nav */}
@@ -56,6 +75,13 @@ export function Landing() {
           <span className="font-semibold text-foreground tracking-tight">Trainistry</span>
         </div>
         <div className="flex items-center gap-3">
+          <button 
+            onClick={toggleTheme}
+            className="w-7 h-7 flex items-center justify-center rounded hover:bg-secondary text-foreground transition-colors"
+            title="Toggle Theme"
+          >
+            {isLightMode ? <Moon size={13} /> : <Sun size={13} />}
+          </button>
           <button
             onClick={() => navigate("/login")}
             className="px-4 py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
