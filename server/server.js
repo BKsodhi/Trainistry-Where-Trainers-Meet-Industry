@@ -41,6 +41,7 @@ app.use(cors({
   origin: process.env.PRODUCTION_CLIENT_URL || process.env.CLIENT_URL || 'http://localhost:5173',
   credentials: true
 }));
+app.set('trust proxy', 1); // CRITICAL: Allows Rate Limiter to see actual user IPs behind Render's proxy
 app.use(express.json());
 app.use(cookieParser());
 
