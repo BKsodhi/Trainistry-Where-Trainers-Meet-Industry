@@ -1,4 +1,4 @@
-import { Bell, Search, ShieldCheck, Check, Menu } from "lucide-react";
+import { Bell, Search, ShieldCheck, Check, Menu, Sun, Moon } from "lucide-react";
 import { useApp } from "../../context/AppContext";
 import { useState, useEffect, useRef } from "react";
 import { apiClient } from "../../utils/apiClient";
@@ -18,6 +18,24 @@ export function Header({ title, subtitle }: HeaderProps) {
   const [showDropdown, setShowDropdown] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  
+  const [isLightMode, setIsLightMode] = useState(() => {
+    return localStorage.getItem('theme') === 'light';
+  });
+
+  useEffect(() => {
+    if (isLightMode) {
+      document.documentElement.classList.add('light');
+    } else {
+      document.documentElement.classList.remove('light');
+    }
+  }, [isLightMode]);
+
+  const toggleTheme = () => {
+    const nextTheme = !isLightMode;
+    setIsLightMode(nextTheme);
+    localStorage.setItem('theme', nextTheme ? 'light' : 'dark');
+  };
 
   const fallbackName = user?.email?.split('@')[0] || "User";
   const avatar = user ? user.email.substring(0, 2).toUpperCase() : "U";
@@ -100,6 +118,14 @@ export function Header({ title, subtitle }: HeaderProps) {
             className="bg-secondary text-foreground border border-border rounded pl-8 pr-3 py-1.5 text-xs placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary w-44"
           />
         </div>
+
+        <button 
+          onClick={toggleTheme}
+          className="w-7 h-7 flex items-center justify-center rounded bg-secondary hover:bg-secondary/80 text-foreground transition-colors"
+          title="Toggle Theme"
+        >
+          {isLightMode ? <Moon size={13} /> : <Sun size={13} />}
+        </button>
 
         <div className="relative" ref={dropdownRef}>
           <button 
