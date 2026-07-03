@@ -70,6 +70,20 @@ export const updateMilestoneState = async (contractId, milestoneId, targetStatus
   return { contract, milestone };
 };
 
+export const raiseDispute = async (contractId, userId) => {
+  const contract = await Contract.findById(contractId);
+  if (!contract) throw new Error('CONTRACT_NOT_FOUND');
+
+  // Verify the user owns this contract (either trainer or company)
+  if (contract.trainerId.toString() !== userId && contract.companyId.toString() !== userId) {
+    throw new Error('UNAUTHORIZED');
+  }
+
+  contract.status = 'DISPUTED';
+  await contract.save();
+  return contract;
+};
+
 export const getContractsByRole = async (userId, role) => {
   if (role === 'TRAINER') {
     return await Contract.find({ trainerId: userId })

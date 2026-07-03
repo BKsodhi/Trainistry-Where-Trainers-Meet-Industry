@@ -1,8 +1,10 @@
-import { Bell, Search, ShieldCheck, Check } from "lucide-react";
+import { Bell, Search, ShieldCheck, Check, Menu } from "lucide-react";
 import { useApp } from "../../context/AppContext";
 import { useState, useEffect, useRef } from "react";
 import { apiClient } from "../../utils/apiClient";
 import { useNavigate } from "react-router";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "../ui/sheet";
+import { SidebarContent } from "./Sidebar";
 
 interface HeaderProps {
   title: string;
@@ -14,6 +16,7 @@ export function Header({ title, subtitle }: HeaderProps) {
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState<any[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const fallbackName = user?.email?.split('@')[0] || "User";
@@ -66,9 +69,27 @@ export function Header({ title, subtitle }: HeaderProps) {
   return (
     <header className="h-14 border-b border-border flex items-center justify-between px-6"
       style={{ background: "var(--background)" }}>
-      <div>
-        <h1 className="text-foreground font-semibold tracking-tight leading-none">{title}</h1>
-        {subtitle && <p className="text-muted-foreground mt-0.5 leading-none" style={{ fontSize: 12 }}>{subtitle}</p>}
+      <div className="flex items-center gap-3">
+        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+          <SheetTrigger asChild>
+            <button className="md:hidden w-8 h-8 flex items-center justify-center rounded hover:bg-secondary transition-colors">
+              <Menu size={16} className="text-foreground" />
+            </button>
+          </SheetTrigger>
+          <SheetContent side="left" className="p-0 w-64" style={{ background: "var(--sidebar)" }}>
+            <div className="sr-only">
+              <SheetTitle>Navigation Menu</SheetTitle>
+              <SheetDescription>Main navigation for the application</SheetDescription>
+            </div>
+            <div className="h-full flex flex-col">
+              <SidebarContent onNavigate={() => setIsMobileMenuOpen(false)} />
+            </div>
+          </SheetContent>
+        </Sheet>
+        <div>
+          <h1 className="text-foreground font-semibold tracking-tight leading-none truncate max-w-[150px] sm:max-w-xs">{title}</h1>
+          {subtitle && <p className="text-muted-foreground mt-0.5 leading-none truncate max-w-[150px] sm:max-w-xs" style={{ fontSize: 12 }}>{subtitle}</p>}
+        </div>
       </div>
 
       <div className="flex items-center gap-3">

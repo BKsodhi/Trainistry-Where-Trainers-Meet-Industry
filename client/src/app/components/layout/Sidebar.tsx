@@ -44,23 +44,22 @@ const ROLE_COLORS: Record<NonNullable<Role>, string> = {
   admin: "#f59e0b",
 };
 
-export function Sidebar() {
+export function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const { role, setRole, setAuthenticated } = useApp();
   const navigate = useNavigate();
 
   if (!role) return null;
-
   const items = NAV_ITEMS[role];
 
   const handleLogout = () => {
     setRole(null);
     setAuthenticated(false);
     navigate("/");
+    if (onNavigate) onNavigate();
   };
 
   return (
-    <aside className="fixed top-0 left-0 h-screen w-56 flex flex-col border-r border-border z-50"
-      style={{ background: "var(--sidebar)" }}>
+    <>
       {/* Logo */}
       <div className="px-4 py-5 border-b border-sidebar-border flex items-center gap-2.5">
         <div className="w-7 h-7 rounded flex items-center justify-center" style={{ background: "var(--primary)" }}>
@@ -81,6 +80,7 @@ export function Sidebar() {
           <NavLink
             key={item.path}
             to={item.path}
+            onClick={() => onNavigate && onNavigate()}
             className={({ isActive }) =>
               cn(
                 "flex items-center gap-2.5 px-3 py-2 rounded text-[13px] transition-all group",
@@ -114,6 +114,19 @@ export function Sidebar() {
           <span>Sign Out</span>
         </button>
       </div>
+    </>
+  );
+}
+
+export function Sidebar() {
+  const { role } = useApp();
+  if (!role) return null;
+  const navigate = useNavigate();
+
+  return (
+    <aside className="hidden md:flex fixed top-0 left-0 h-screen w-56 flex-col border-r border-border z-50"
+      style={{ background: "var(--sidebar)" }}>
+      <SidebarContent />
     </aside>
   );
 }

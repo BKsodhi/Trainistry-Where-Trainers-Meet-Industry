@@ -28,6 +28,7 @@ export function CompanyPayments() {
 
               return {
                 id: m._id,
+                contractId: contract._id,
                 trainer: contract.trainerId?.email?.split('@')[0] || "Unknown Trainer",
                 project: contract.requirementId?.title || "Unknown Project",
                 milestone: m.title || "Milestone Payment",
@@ -140,6 +141,19 @@ export function CompanyPayments() {
                     {p.project} · Due {p.dueDate}
                     {p.status === "overdue" && <span className="text-destructive"> · {(p as any).daysOverdue}d overdue</span>}
                     {p.status === "released" && <span style={{ color: "#10b981" }}> · Released {(p as any).releasedDate}</span>}
+                  </div>
+                  <div className="flex items-center gap-2 mt-1">
+                    <button onClick={async () => {
+                      if(window.confirm('Are you sure you want to raise a formal dispute on this contract? The Admin will be notified and funds will be locked.')){
+                        try{
+                          await apiClient(`/billing/contracts/${(p as any).contractId}/dispute`, { method: 'POST' });
+                          alert('Dispute raised successfully. Admin has been notified.');
+                          window.location.reload();
+                        } catch(e) { console.error(e); }
+                      }
+                    }} className="text-[10px] text-destructive hover:underline">
+                      Raise Dispute
+                    </button>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 ml-4 flex-shrink-0">

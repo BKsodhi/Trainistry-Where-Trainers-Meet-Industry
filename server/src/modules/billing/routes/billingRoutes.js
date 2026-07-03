@@ -8,5 +8,6 @@ router.get('/trainer/stats', authenticateUser, authorizeRoles('TRAINER'), billin
 router.get('/contracts', authenticateUser, billingController.getContracts);
 router.post('/contracts', authenticateUser, authorizeRoles('COMPANY'), billingController.createContract);
 router.patch('/contracts/:id/milestones/:milestoneId/status', authenticateUser, billingController.transitionMilestone);
+router.post('/contracts/:id/dispute', authenticateUser, billingController.disputeContract);
 
 export default router;

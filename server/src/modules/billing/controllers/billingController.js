@@ -72,3 +72,15 @@ export const getTrainerStats = async (req, res, next) => {
     next(error);
   }
 };
+
+export const disputeContract = async (req, res, next) => {
+  try {
+    const contractId = req.params.id;
+    const userId = req.user.id;
+    
+    const contract = await billingService.raiseDispute(contractId, userId);
+    return res.status(200).json({ success: true, data: contract });
+  } catch (error) {
+    next(error);
+  }
+};

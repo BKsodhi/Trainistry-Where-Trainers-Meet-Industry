@@ -47,11 +47,8 @@ export function Login() {
   const handleRoleSelect = (r: Role) => {
     setSelectedRole(r);
     if (!isRegisterMode) {
-      const demoEmail = ROLES.find((role) => role.id === r)?.demo.email;
-      if (demoEmail) {
-        setEmail(demoEmail);
-        setPassword("password123");
-      }
+      setEmail("");
+      setPassword("");
       setStep("auth");
     } else {
       setName("");
@@ -241,7 +238,7 @@ export function Login() {
                 )}
                 <div>
                   <h2 className="font-semibold text-foreground text-sm">Sign in as {demoUser?.label}</h2>
-                  <p className="text-muted-foreground" style={{ fontSize: 11 }}>Demo credentials pre-filled</p>
+                  <p className="text-muted-foreground" style={{ fontSize: 11 }}>Enter your credentials to continue</p>
                 </div>
               </div>
 
@@ -281,9 +278,7 @@ export function Login() {
                 {isSubmitting ? "Authenticating..." : "Enter Platform"} {!isSubmitting && <ArrowRight size={14} />}
               </button>
 
-              <div className="mt-4 p-3 rounded border border-border text-xs text-muted-foreground" style={{ background: "var(--secondary)" }}>
-                <span className="mono text-primary">DEMO MODE</span> — This is a prototype. All data is mock. Click "Enter Platform" to explore the {demoUser?.label} dashboard.
-              </div>
+
             </div>
           )}
         </div>

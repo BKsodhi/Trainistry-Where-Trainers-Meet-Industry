@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Plus, Calendar, TrendingUp, AlertCircle, Clock, CheckCircle2, DollarSign, User, FileText } from "lucide-react";
 import { apiClient } from "../../utils/apiClient";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "../../components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "../../components/ui/dialog";
 import { Button } from "../../components/ui/button";
 import { Badge } from "../../components/ui/badge";
 
@@ -467,9 +467,9 @@ export function HiringPipeline() {
       )}
 
       {/* Pipeline Board */}
-      <div className="flex gap-4 overflow-x-auto pb-4 snap-x">
+      <div className="flex flex-col md:flex-row gap-4 md:overflow-x-auto pb-4 md:snap-x">
         {pipelineData.columns.map((col) => (
-          <div key={col.id} className="w-72 shrink-0 snap-start flex flex-col h-[calc(100vh-140px)]">
+          <div key={col.id} className="w-full md:w-72 shrink-0 md:snap-start flex flex-col md:h-[calc(100vh-140px)]">
             {/* Column header */}
             <div className="flex items-center justify-between mb-3 px-1">
               <div className="flex items-center gap-2">
@@ -515,6 +515,9 @@ export function HiringPipeline() {
                 <DialogTitle className="text-xl font-bold tracking-tight">
                   {selectedApp.projectTitle}
                 </DialogTitle>
+                <DialogDescription className="sr-only">
+                  Application review details
+                </DialogDescription>
                 <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
                   <User className="h-3.5 w-3.5 text-muted-foreground/70" />
                   Applicant: <span className="font-semibold text-foreground">{selectedApp.trainerName}</span>

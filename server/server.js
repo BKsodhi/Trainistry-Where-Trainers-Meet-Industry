@@ -22,7 +22,7 @@ const app = express();
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: process.env.PRODUCTION_CLIENT_URL || process.env.CLIENT_URL || 'http://localhost:5173',
     credentials: true
   }
 });
@@ -38,7 +38,7 @@ connectDatabase().catch((err) => {
 
 app.use(helmet());
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: process.env.PRODUCTION_CLIENT_URL || process.env.CLIENT_URL || 'http://localhost:5173',
   credentials: true
 }));
 app.use(express.json());

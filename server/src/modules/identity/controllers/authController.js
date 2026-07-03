@@ -2,8 +2,8 @@ import * as authService from '../services/authService.js';
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production', // True only when deployed on SSL
-  sameSite: 'strict',
+  secure: true,
+  sameSite: 'lax',
   maxAge: 24 * 60 * 60 * 1000 // Exact 24 Hour runtime window
 };
 

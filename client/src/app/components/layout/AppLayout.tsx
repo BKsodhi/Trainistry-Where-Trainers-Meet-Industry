@@ -32,7 +32,7 @@ export function AppLayout() {
   return (
     <div className="flex h-screen overflow-hidden bg-background">
       <Sidebar />
-      <div className="flex-1 ml-56 flex flex-col min-w-0">
+      <div className="flex-1 md:ml-56 flex flex-col min-w-0">
         <Header title={meta.title} subtitle={meta.subtitle} />
         <main className="flex-1 overflow-y-auto p-6">
           <Outlet />

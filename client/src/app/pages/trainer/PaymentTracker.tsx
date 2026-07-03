@@ -40,6 +40,8 @@ export function PaymentTracker() {
       
       flattenedMilestones.push({
         id: m._id,
+        contractId: contract._id,
+        contractStatus: contract.status,
         project: projectName,
         company: companyName,
         title: m.title,
@@ -87,6 +89,21 @@ export function PaymentTracker() {
                     <span className="text-foreground">{m.company}</span> • {m.title}
                   </div>
                   <div className="text-xs text-muted-foreground mt-1">Due: {m.dueDate}</div>
+                  {m.contractStatus !== 'COMPLETED' && m.contractStatus !== 'DISPUTED' && (
+                    <div className="mt-1">
+                      <button onClick={async () => {
+                        if(window.confirm('Are you sure you want to raise a formal dispute on this contract? The Admin will be notified and funds will be locked.')){
+                          try{
+                            await apiClient(`/billing/contracts/${m.contractId}/dispute`, { method: 'POST' });
+                            alert('Dispute raised successfully. Admin has been notified.');
+                            window.location.reload();
+                          } catch(e) { console.error(e); }
+                        }
+                      }} className="text-[10px] text-destructive hover:underline">
+                        Raise Dispute
+                      </button>
+                    </div>
+                  )}
                 </div>
                 
                 <div className="flex items-center gap-4">
@@ -95,19 +112,25 @@ export function PaymentTracker() {
                   </div>
                   
                   <div className="w-[100px] text-right flex-shrink-0">
-                    {m.status === 'RELEASED' && (
+                    {m.contractStatus === 'DISPUTED' && (
+                      <span className="inline-flex items-center justify-center gap-1 px-2 py-1 rounded text-[10px] font-medium" 
+                        style={{ background: "rgba(239,68,68,0.1)", color: "#ef4444" }}>
+                        <AlertCircle size={10} /> Disputed
+                      </span>
+                    )}
+                    {m.contractStatus !== 'DISPUTED' && m.status === 'RELEASED' && (
                       <span className="inline-flex items-center justify-center gap-1 px-2 py-1 rounded text-[10px] font-medium" 
                         style={{ background: "rgba(16,185,129,0.1)", color: "#10b981" }}>
                         <CheckCircle2 size={10} /> Released
                       </span>
                     )}
-                    {(m.status === 'FUNDED' || m.status === 'IN_REVIEW') && (
+                    {m.contractStatus !== 'DISPUTED' && (m.status === 'FUNDED' || m.status === 'IN_REVIEW') && (
                       <span className="inline-flex items-center justify-center gap-1 px-2 py-1 rounded text-[10px] font-medium" 
                         style={{ background: "rgba(245,158,11,0.1)", color: "#f59e0b" }}>
                         <AlertCircle size={10} /> Pending
                       </span>
                     )}
-                    {m.status === 'PENDING' && (
+                    {m.contractStatus !== 'DISPUTED' && m.status === 'PENDING' && (
                       <span className="inline-flex items-center justify-center gap-1 px-2 py-1 rounded text-[10px] font-medium border border-border text-muted-foreground">
                         Upcoming
                       </span>
