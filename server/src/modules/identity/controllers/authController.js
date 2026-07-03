@@ -20,9 +20,17 @@ export const register = async (req, res, next) => {
 
     const createdUserData = await authService.registerNewUser(email, password, role);
 
+    // 🔒 THE FIX: Append your secure cookie node on successful registration!
+    // This logs the user in instantly and prevents blank dashboard redirects on mobile devices.
+    if (createdUserData && createdUserData.token) {
+      res.cookie('token', createdUserData.token, COOKIE_OPTIONS);
+    }
+
     return res.status(201).json({
       success: true,
-      data: createdUserData,
+      // Strip token from raw JSON return body if your service layer bundles it,
+      // keeping identity delivery cleanly restricted to the secure cookie boundary.
+      data: { user: createdUserData.user || createdUserData },
       meta: { timestamp: new Date().toISOString() }
     });
   } catch (error) {
