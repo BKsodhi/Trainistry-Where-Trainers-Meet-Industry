@@ -1,0 +1,10 @@
+{
+  "name": "trainistry-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev:client": "pnpm --filter @figma/my-make-file dev",
+    "dev:server": "pnpm --filter server dev",
+    "dev": "pnpm run --parallel \"/^dev:.*/\""
+  }
+}
