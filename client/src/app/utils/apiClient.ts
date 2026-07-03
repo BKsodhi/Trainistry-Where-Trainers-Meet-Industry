@@ -1,7 +1,7 @@
 /**
  * Trainistry Centralized HTTP API Client Module
  */
-const BASE_URL = 'http://localhost:5000/api/v1';
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
 
 interface RequestOptions extends RequestInit {
   bodyData?: any;
