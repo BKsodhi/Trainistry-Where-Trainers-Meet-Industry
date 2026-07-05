@@ -151,7 +151,7 @@ export function ProjectBrowser() {
             <div key={p.id} className="rounded border border-border overflow-hidden hover:border-primary/40 transition-colors"
               style={{ background: "var(--card)" }}>
               <div className="p-4">
-                <div className="flex items-start justify-between gap-3">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       <h3 className="font-medium text-foreground">{p.title}</h3>
@@ -177,7 +177,7 @@ export function ProjectBrowser() {
                     </div>
                   </div>
 
-                  <div className="flex-shrink-0 text-right">
+                  <div className="flex-shrink-0 sm:text-right mt-2 sm:mt-0">
                     <div className="mono font-semibold text-foreground text-sm">
                       ₹{(p.budget.min / 1000).toFixed(0)}K–₹{(p.budget.max / 1000).toFixed(0)}K
                     </div>
@@ -185,8 +185,8 @@ export function ProjectBrowser() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between mt-4 pt-3 border-t border-border">
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-4 pt-3 border-t border-border">
+                  <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
                     <span className="flex items-center gap-1"><MapPin size={10} /> {p.location}</span>
                     <span className="flex items-center gap-1"><Clock size={10} /> {p.duration}</span>
                     <span className="flex items-center gap-1"><Users size={10} /> {p.applicants} applied</span>

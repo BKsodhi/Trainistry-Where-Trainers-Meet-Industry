@@ -36,7 +36,7 @@ export function Applications() {
   return (
     <div className="space-y-5">
       {/* Summary row */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
           { label: "Total Applied", value: totalApplied, color: "#9ca3af" },
           { label: "Under Review", value: underReview, color: "#3b82f6" },
@@ -68,16 +68,16 @@ export function Applications() {
               const Icon = sc.icon;
               
               return (
-                <div key={app._id} className="p-4 flex items-center justify-between hover:bg-secondary/30 transition-colors">
-                  <div>
-                    <div className="font-medium text-foreground">{app.requirementId?.title || 'Unknown Project'}</div>
+                <div key={app._id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-secondary/30 transition-colors">
+                  <div className="min-w-0">
+                    <div className="font-medium text-foreground truncate">{app.requirementId?.title || 'Unknown Project'}</div>
                     <div className="text-xs text-muted-foreground mt-1 flex items-center gap-2">
                       <span>{app.requirementId?.companyId?.email?.split('@')[0] || 'Unknown Company'}</span>
                       <span>•</span>
                       <span>Applied {new Date(app.createdAt).toLocaleDateString()}</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center justify-between sm:justify-end gap-4 mt-2 sm:mt-0">
                     <div className="text-right">
                       <div className="text-sm font-medium mono">₹{(app.bidAmount / 1000).toFixed(0)}K</div>
                       <div className="text-[10px] text-muted-foreground">Proposed</div>

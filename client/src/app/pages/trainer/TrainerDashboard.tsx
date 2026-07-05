@@ -181,12 +181,12 @@ export function TrainerDashboard() {
           {myApplications.slice(0, 3).map((app) => {
             const sc = STATUS_CONFIG[app.status as keyof typeof STATUS_CONFIG] || STATUS_CONFIG.under_review;
             return (
-              <div key={app._id || app.id || Math.random().toString()} className="px-4 py-3 flex items-center justify-between hover:bg-secondary/30 transition-colors">
+              <div key={app._id || app.id || Math.random().toString()} className="px-4 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-secondary/30 transition-colors">
                 <div className="min-w-0">
                   <div className="font-medium text-foreground text-sm truncate">{app.requirementId?.title || 'Unknown Project'}</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">{app.requirementId?.companyId?.email?.split('@')[0] || 'Unknown Company'}</div>
+                  <div className="text-xs text-muted-foreground mt-0.5 truncate">{app.requirementId?.companyId?.email?.split('@')[0] || 'Unknown Company'}</div>
                 </div>
-                <div className="ml-4 flex-shrink-0">
+                <div className="sm:ml-4 flex-shrink-0">
                   <span className="px-2 py-0.5 rounded text-[11px] font-medium mono"
                     style={{ background: sc.bg, color: sc.color }}>
                     {sc.label}
