@@ -1,7 +1,11 @@
 /**
  * Trainistry Centralized HTTP API Client Module
  */
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+let BASE_URL = import.meta.env.VITE_API_URL || 'https://trainistry-where-trainers-meet-industry-w2tj.onrender.com/api/v1';
+if (BASE_URL && !BASE_URL.endsWith('/api/v1')) {
+  // Automatically append /api/v1 if the user forgot it in their Vercel environment variables
+  BASE_URL = `${BASE_URL.replace(/\/$/, '')}/api/v1`;
+}
 
 interface RequestOptions extends RequestInit {
   bodyData?: any;
@@ -14,6 +18,11 @@ export const apiClient = async (endpoint: string, options: RequestOptions = {}) 
   const headers = new Headers(options.headers || {});
   if (options.bodyData && !(options.bodyData instanceof FormData)) {
     headers.set('Content-Type', 'application/json');
+  }
+
+  const token = localStorage.getItem('trainistry_token');
+  if (token) {
+    headers.set('Authorization', `Bearer ${token}`);
   }
 
   const config: RequestInit = {

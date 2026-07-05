@@ -57,6 +57,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const loginSession = async (payload: any) => {
     const response = await apiClient('/auth/login', { method: 'POST', bodyData: payload });
     if (response.success) {
+      if (response.data.token) {
+        localStorage.setItem('trainistry_token', response.data.token);
+      }
       setUser(response.data.user);
       setRole(response.data.user.role.toLowerCase() as Role);
       setAuthenticated(true);
@@ -73,6 +76,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   const logoutSession = async () => {
     await apiClient('/auth/logout', { method: 'POST' });
+    localStorage.removeItem('trainistry_token');
     setUser(null);
     setRole(null);
     setAuthenticated(false);

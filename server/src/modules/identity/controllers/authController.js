@@ -30,7 +30,7 @@ export const register = async (req, res, next) => {
       success: true,
       // Strip token from raw JSON return body if your service layer bundles it,
       // keeping identity delivery cleanly restricted to the secure cookie boundary.
-      data: { user: createdUserData.user || createdUserData },
+      data: { user: createdUserData.user || createdUserData, token: createdUserData.token },
       meta: { timestamp: new Date().toISOString() }
     });
   } catch (error) {
@@ -68,7 +68,7 @@ export const login = async (req, res, next) => {
 
     return res.status(200).json({
       success: true,
-      data: { user: loginDataResult.user },
+      data: { user: loginDataResult.user, token: loginDataResult.token },
       meta: { timestamp: new Date().toISOString() }
     });
   } catch (error) {
